@@ -1,0 +1,149 @@
+{% extends 'prep_app/base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/cv_analysis_result.css' %}">
+{% endblock css %}
+
+{% block content %}
+<div class="cv-analysis-results">
+    <h1>CV Analysis Results for {{ job_role }} at {{ company_name }}</h1>
+
+    <div class="results-container">
+        <div class="left-half">
+            <h2>Keywords from Job Description</h2>
+            <input type="text" id="keywordSearch" placeholder="Search keywords...">
+            <table class="keyword-table">
+                <thead>
+                    <tr>
+                        <th>Keyword</th>
+                        <th>Occurrence</th>
+                    </tr>
+                </thead>
+                <tbody id="keywordTableBody">
+                    {% for keyword in analysis.keywords|slice:":10" %}
+                    <tr>
+                        <td>{{ keyword.word }}</td>
+                        <td>{{ keyword.count }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="pagination">
+                <button id="prevPage">Previous</button>
+                <button id="nextPage">Next</button>
+            </div>
+        </div>
+
+        <div class="right-half">
+            <div class="top-right">
+                <h2>Match Score</h2>
+                <div class="score-circle">
+                    <span class="score">{{ analysis.match_score }}%</span>
+                </div>
+            </div>
+
+            <div class="bottom-right">
+                <h2>Skills Analysis</h2>
+                <div class="skills-container">
+                    <div class="skills-column">
+                        <h3>Skills in Your CV</h3>
+                        <table class="skills-table">
+                            <thead>
+                                <tr>
+                                    <th>Skill</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for skill in analysis.cv_skills %}
+                                <tr>
+                                    <td>{{ skill }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="skills-column">
+                        <h3>Missing Skills</h3>
+                        <table class="skills-table">
+                            <thead>
+                                <tr>
+                                    <th>Skill</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for skill in analysis.missing_skills %}
+                                <tr>
+                                    <td>{{ skill }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const keywords = {{ analysis.keywords|safe }};
+    let currentPage = 1;
+    const itemsPerPage = 10;
+
+    function displayKeywords(page) {
+        const start = (page - 1) * itemsPerPage;
+        const end = start + itemsPerPage;
+        const tableBody = document.getElementById('keywordTableBody');
+        tableBody.innerHTML = '';
+
+        for (let i = start; i < end && i < keywords.length; i++) {
+            const row = `<tr>
+                <td>${keywords[i].word}</td>
+                <td>${keywords[i].count}</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        }
+    }
+
+    function updatePagination() {
+        document.getElementById('prevPage').disabled = currentPage === 1;
+        document.getElementById('nextPage').disabled = currentPage === Math.ceil(keywords.length / itemsPerPage);
+    }
+
+    document.getElementById('prevPage').addEventListener('click', () => {
+        if (currentPage > 1) {
+            currentPage--;
+            displayKeywords(currentPage);
+            updatePagination();
+        }
+    });
+
+    document.getElementById('nextPage').addEventListener('click', () => {
+        if (currentPage < Math.ceil(keywords.length / itemsPerPage)) {
+            currentPage++;
+            displayKeywords(currentPage);
+            updatePagination();
+        }
+    });
+
+    document.getElementById('keywordSearch').addEventListener('input', (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+        const filteredKeywords = keywords.filter(k => k.word.toLowerCase().includes(searchTerm));
+        const tableBody = document.getElementById('keywordTableBody');
+        tableBody.innerHTML = '';
+
+        filteredKeywords.slice(0, 10).forEach(keyword => {
+            const row = `<tr>
+                <td>${keyword.word}</td>
+                <td>${keyword.count}</td>
+            </tr>`;
+            tableBody.innerHTML += row;
+        });
+    });
+
+    // Initial display
+    displayKeywords(currentPage);
+    updatePagination();
+</script>
+{% endblock %}

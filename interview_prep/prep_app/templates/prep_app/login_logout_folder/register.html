@@ -1,0 +1,117 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AceInterview - Register</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/login_logout_css/register.css">
+</head>
+<body class="min-h-screen hero-pattern bg-gray-50">
+    <!-- Navigation Bar -->
+    <nav class="bg-white shadow-sm">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="{% url 'home' %}" class="text-2xl font-bold text-blue-600">
+                    AceInterview
+                </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'home' %}" class="text-gray-600 hover:text-blue-600">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login/Register Container -->
+    <div class="container mx-auto px-6 py-12">
+        <div class="max-w-md mx-auto">
+            <!-- Tab Navigation -->
+            <div class="flex mb-8 bg-white rounded-lg p-1 shadow-sm">
+                <button class="flex-1 px-4 py-2 text-sm font-medium rounded-md text-gray-600 hover:text-blue-600" id="loginTab">
+                    Login
+                </button>
+                <button class="flex-1 px-4 py-2 text-sm font-medium rounded-md bg-blue-600 text-white" id="registerTab">
+                    Register
+                </button>
+            </div>
+
+            <!-- Messages -->
+            {% if messages %}
+                {% for message in messages %}
+                    <div class="mb-4 p-4 rounded-lg {% if message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+
+            <!-- Form Container -->
+            <div class="bg-white rounded-lg shadow-sm p-8">
+                <h2 class="text-2xl font-bold text-gray-900 mb-8">Create Account</h2>
+                
+                <form method="post" id="registerForm">
+                    {% csrf_token %}
+                    
+                    <div class="mb-6">
+                        <label for="{{ form.username.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">Username</label>
+                        {{ form.username }}
+                    </div>
+    
+                    <div class="mb-6">
+                        <label for="{{ form.password1.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        {{ form.password1 }}
+                        <div id="passwordRequirements" class="mt-3 space-y-2 text-sm">
+                            <div class="requirement" data-requirement="length">
+                                <span class="text-red-600">• Must contain at least 8 characters</span>
+                            </div>
+                            <div class="requirement" data-requirement="numeric">
+                                <span class="text-red-600">• Can't be entirely numeric</span>
+                            </div>
+                            <div class="requirement" data-requirement="common">
+                                <span class="text-red-600">• Can't be a commonly used password</span>
+                            </div>
+                            <div class="requirement" data-requirement="personal">
+                                <span class="text-red-600">• Can't be too similar to personal information</span>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <div class="mb-6">
+                        <label for="{{ form.password2.id_for_label }}" class="block text-sm font-medium text-gray-700 mb-2">Password confirmation</label>
+                        {{ form.password2 }}
+                        <div class="text-sm text-gray-500 mt-1">Enter the same password as before, for verification.</div>
+                    </div>
+    
+                    <div class="flex items-center mb-6">
+                        <input type="checkbox" required class="form-checkbox" id="terms">
+                        <label for="terms" class="ml-2 text-sm text-gray-600">
+                            I agree to the 
+                            <a href="#" class="text-blue-600 hover:text-blue-800">Terms of Service</a> and 
+                            <a href="#" class="text-blue-600 hover:text-blue-800">Privacy Policy</a>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="w-full bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                        Create Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const loginTab = document.getElementById('loginTab');
+        const registerTab = document.getElementById('registerTab');
+
+        loginTab.addEventListener('click', () => {
+            window.location.href = "{% url 'login' %}";
+        });
+
+        registerTab.addEventListener('click', () => {
+            window.location.href = "{% url 'register' %}";
+        });
+    </script>
+    <script src="/static/js/register_form.js"></script>
+</body>
+</html>

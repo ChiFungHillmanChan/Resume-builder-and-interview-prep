@@ -1,0 +1,211 @@
+.container {
+    display: flex;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* Form section styles */
+.form-section {
+    flex: 1;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Tab navigation */
+.tab-nav {
+    display: flex;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.tab-button {
+    flex: 1;
+    padding: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    color: #666;
+    position: relative;
+}
+
+.tab-button.active {
+    color: #007bff;
+}
+
+.tab-button.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: #007bff;
+}
+
+/* Form content */
+.form-content {
+    padding: 20px;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Form fields */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-row{
+    display:flex;
+    justify-content: flex-start;
+}
+.form-group .half{
+    margin: 0px 20px;
+}
+.checkbox-group{
+    display:flex;
+    justify-content: flex-start;
+}
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: #333;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+    width: 90%;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Preview section */
+.resume-preview {
+    width: 21cm;
+    min-height: 29.7cm;
+    padding: 2.5cm 2cm;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    font-family: "Times New Roman", serif;
+    line-height: 1.5;
+}
+
+/* Header Styles */
+.resume-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.resume-header h1 {
+    font-size: 36px;
+    margin: 0 0 15px 0;
+    font-weight: bold;
+}
+
+.contact-info {
+    text-align: center;
+    font-size: 14px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid black;
+    padding-bottom: 15px;
+}
+
+/* Section Styles */
+.resume-section {
+    margin-bottom: 30px;
+    position: relative;
+}
+
+.section-title {
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: bold;
+    margin: 25px 0 15px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px; 
+}
+
+.section-title::before,
+.section-title::after {
+    content: '';
+    height: 1px;
+    background-color: black;
+    flex: 1; 
+}
+/* Work History Styles */
+.work-entry {
+    margin-bottom: 20px;
+}
+
+.job-header {
+    margin-bottom: 5px;
+}
+
+.preview-jobTitle {
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.company-line {
+    margin-bottom: 10px;
+}
+
+.preview-company {
+    font-weight: bold;
+}
+
+.preview-location {
+    font-style: italic;
+    margin-left: 5px;
+}
+
+/* Skills Styles */
+.skills-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.skills-column {
+    width: 48%;
+}
+
+.skill-item {
+    margin-bottom: 10px;
+    position: relative;
+    padding-left: 15px;
+}
+
+.skill-item::before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#preview-summary {
+    padding: 0 20px;
+    text-align: justify;
+}

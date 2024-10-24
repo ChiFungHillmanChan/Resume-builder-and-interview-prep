@@ -1,0 +1,95 @@
+.cv-analysis-results {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.results-container {
+    display: flex;
+    gap: 30px;
+}
+
+.left-half, .right-half {
+    flex: 1;
+}
+
+.keyword-table, .skills-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.keyword-table th, .keyword-table td,
+.skills-table th, .skills-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.keyword-table th, .skills-table th {
+    background-color: #f2f2f2;
+}
+
+.score-circle {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #1a237e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+}
+
+.score {
+    font-size: 36px;
+    color: white;
+    font-weight: bold;
+}
+
+.skills-container {
+    display: flex;
+    gap: 20px;
+}
+
+.skills-column {
+    flex: 1;
+}
+
+#keywordSearch {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.pagination button {
+    padding: 5px 10px;
+    background-color: #1a237e;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+    .results-container {
+        flex-direction: column;
+    }
+
+    .skills-container {
+        flex-direction: column;
+    }
+}

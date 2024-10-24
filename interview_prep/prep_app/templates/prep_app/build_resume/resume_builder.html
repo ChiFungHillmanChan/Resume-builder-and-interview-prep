@@ -1,0 +1,215 @@
+{% extends 'prep_app/base.html' %}
+{% load static %}
+
+{% block css %}
+<link rel="stylesheet" href="/static/css/build_resume/resume_builder.css">
+{% endblock css %}
+
+{% block content %}
+<div class="container">
+    <!-- Form Section -->
+    <div class="form-section">
+        <div class="tab-nav">
+            <button class="tab-button active" data-tab="personal">Personal Info</button>
+            <button class="tab-button" data-tab="experience">Experience</button>
+            <button class="tab-button" data-tab="education">Education</button>
+            <button class="tab-button" data-tab="skills">Skills</button>
+        </div>
+
+        <div class="form-content">
+            <!-- Personal Info Tab -->
+            <div class="tab-content active" id="personal-tab">
+                <form id="personal-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" name="fullName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Address</label>
+                        <input type="text" id="address" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="summary">Professional Summary</label>
+                        <textarea id="summary" name="summary" required></textarea>
+                    </div>
+                    <button type="submit" class="button">Save & Continue</button>
+                </form>
+            </div>
+
+            <!-- Experience Tab -->
+            <div class="tab-content" id="experience-tab">
+                <form id="experience-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="jobTitle">Job Title</label>
+                        <input type="text" id="jobTitle" name="jobTitle" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" id="company" name="company" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <input type="text" id="city" name="city" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group half">
+                            <label for="startDate">Start Date</label>
+                            <input type="date" id="startDate" name="startDate" required>
+                        </div>
+                        
+                        <div class="form-group half">
+                            <label for="endDate">End Date</label>
+                            <input type="date" id="endDate" name="endDate">
+                        </div>
+                    </div>
+
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="is_current" name="is_current">
+                        <label for="is_current">This is my current position</label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description Points</label>
+                        <div class="description-container">
+                            <!-- Description inputs will be added here dynamically -->
+                        </div>
+                    </div>
+
+                    <button type="submit" class="button">Add Experience</button>
+                </form>
+            </div>
+
+            <!-- Education Tab -->
+            <div class="tab-content" id="education-tab">
+                <form id="education-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="school">Institution Name</label>
+                        <input type="text" id="school" name="school" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="degree">Degree</label>
+                        <input type="text" id="degree" name="degree" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="graduationDate">Graduation Date</label>
+                        <input type="date" id="graduationDate" name="graduationDate" required>
+                    </div>
+                    <button type="submit" class="button">Add Education</button>
+                </form>
+            </div>
+
+            <!-- Skills Tab -->
+            <div class="tab-content" id="skills-tab">
+                <form id="skills-form">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="skillName">Skill Name</label>
+                        <input type="text" id="skillName" name="skillName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="skillLevel">Skill Level</label>
+                        <select id="skillLevel" name="skillLevel" required>
+                            <option value="beginner">Beginner</option>
+                            <option value="intermediate">Intermediate</option>
+                            <option value="advanced">Advanced</option>
+                            <option value="expert">Expert</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="button">Add Skill</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Section -->
+    <div id="resume-preview" class="resume-preview">
+        <!-- Header Section -->
+        <div class="resume-header">
+            <h1 id="preview-name">DOM WEBSTER</h1>
+            <div id="preview-contact" class="contact-info">
+                46 Roman Rd, Leeds LS2 3ZR ◆ 07912 345 678 ◆ dom.webster@example.co.uk
+            </div>
+        </div>
+    
+        <!-- Professional Summary Section -->
+        <div class="resume-section">
+            <div class="section-title">PROFESSIONAL SUMMARY</div>
+            <div id="preview-summary">
+                Motivated Care Assistant with 10 years of experience in the Care industry. Offering expertise in person-centred care, implementation and monitoring of individual care plans and management of resident assessments and files. Energetic self-starter and team builder able to navigate high-stress situations. Well-versed in monitoring clients with developmental disabilities and adhering to patient care plans.
+            </div>
+        </div>
+    
+        <!-- Work History Section -->
+        <div class="resume-section">
+            <div class="section-title">WORK HISTORY</div>
+            <div id="preview-experience">
+                <div class="work-entry">
+                    <div class="job-header">
+                        <span id= "preview-jobTitle" class="preview-jobTitle">Senior Care Assistant</span>,
+                        <span id= "preview-start-date" class="preview-start-date">07/2014</span>
+                        - 
+                        <span id= "preview-end-date" class="preview-end-date">Current</span>
+                    </div>
+                    <div class="company-line">
+                        <span id= "preview-company" class="preview-company">Private Care Home</span>
+                        <span id= "preview-location" class="preview-location">- Edinburgh</span>
+                    </div>
+                    <div class="preview-description">
+                        <!-- Description inputs will be added here dynamically -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Skills Section -->
+        <div class="resume-section">
+            <div class="section-title">SKILLS</div>
+            <div class="skills-container">
+                <div class="skills-column">
+                    <div class="skill-item">Strong verbal communication</div>
+                    <div class="skill-item">Attention to detail</div>
+                    <div class="skill-item">Community activities</div>
+                    <div class="skill-item">Medication administration</div>
+                    <div class="skill-item">Care plan management</div>
+                </div>
+                <div class="skills-column">
+                    <div class="skill-item">Risk management processes and analysis</div>
+                    <div class="skill-item">Client safety and First Aid</div>
+                    <div class="skill-item">Compassionate client care</div>
+                    <div class="skill-item">Behaviour redirection</div>
+                </div>
+            </div>
+        </div>
+        <!-- Education Section -->
+        <div class="section-title">EDUCATION</div>
+        <div id="preview-education">
+            <div class="education-entry">
+                <h4>NVQ Level 3: Health And Social Care, 2013</h4>
+                <p>Edinburgh College - Edinburgh</p>
+            </div>
+            <div class="education-entry">
+                <h4>NVQ Level 2: Health And Social Care, 2008</h4>
+                <p>Edinburgh College - Edinburgh</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/static/js/resume_builder/tab_button.js"></script>
+<script src="/static/js/resume_builder/personal_form.js"></script>
+<script src="/static/js/resume_builder/working_experience_form.js"></script>
+{% endblock %}

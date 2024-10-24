@@ -1,0 +1,30 @@
+/* Additional styles for layout */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+.top-nav {
+    background-color: white;
+    padding: 10px 0;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.top-nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.logo {
+    font-weight: bold;
+    font-size: 24px;
+    color: #590909;
+}
+.nav-links a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #333;
+}
+.main-content {
+    display: flex;
+    flex-grow: 1;
+}

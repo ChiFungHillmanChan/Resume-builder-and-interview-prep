@@ -1,0 +1,39 @@
+{% extends 'prep_app/base.html' %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-8 max-w-3xl">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+        <h1 class="text-2xl font-bold text-blue-600 mb-6">Interview Preparation Results</h1>
+        
+        <h2 class="text-xl font-semibold text-gray-800">You are applying for {{ job_role }} at {{ company_name }}</h2>
+
+        <h2 class="text-lg font-semibold text-gray-800 mt-4">Simplified Job Description</h2>
+        <p class="text-gray-600 mt-2">{{ analysis.simplified_description }}</p>
+        
+        <h2 class="text-lg font-semibold text-gray-800 mt-6">Skills Required</h2>
+        <ul class="list-disc ml-6 text-gray-600">
+            {% for skill in analysis.skills %}
+                <li>{{ skill }}</li>
+            {% endfor %}
+        </ul>
+        
+        <h2 class="text-lg font-semibold text-gray-800 mt-6">Key Benefits</h2>
+        <ul class="list-disc ml-6 text-gray-600">
+            {% for benefit in analysis.benefits %}
+                <li>{{ benefit }}</li>
+            {% endfor %}
+        </ul>
+        
+        <h2 class="text-lg font-semibold text-gray-800 mt-6">Future Interview Process Steps</h2>
+        <ol class="list-decimal ml-6 text-gray-600">
+            {% for step in analysis.interview_steps %}
+                <li>{{ step }}</li>
+            {% endfor %}
+        </ol>
+
+        <a href="{% url 'ai_job_info' %}" class="block mt-8 text-center bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
+            Analyze Another Job
+        </a>
+    </div>
+</div>
+{% endblock %}
