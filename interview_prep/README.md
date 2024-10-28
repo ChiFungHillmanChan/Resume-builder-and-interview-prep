@@ -82,7 +82,7 @@ While AceInterviews has great potential, a few challenges need to be addressed:
 
 AceInterviews is a project with strong potential to become a widely-used tool for job seekers. By combining CV analysis, job description insights, skill assessments, and interview simulations, the platform offers a unique, all-in-one solution that helps users stand out in the competitive job market. With further development, it could become an essential resource for anyone looking to optimize their job search process.
 
-## License
+## Creator
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is maded by Chi Fung Hillman Chan
 
