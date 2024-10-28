@@ -1,39 +1,218 @@
-{% extends 'prep_app/base.html' %}
+{% extends 'prep_app/base.html' %} {% block content %}
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-4xl mx-auto">
+    <!-- Header Section -->
+    <div class="bg-white rounded-xl shadow-lg overflow-hidden mb-6">
+      <div class="bg-blue-600 px-8 py-6">
+        <h1 class="text-2xl font-bold text-white">Job Analysis Results</h1>
+        <div class="mt-4 flex items-center gap-2 text-blue-100">
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+            ></path>
+          </svg>
+          <h2 class="text-xl">{{ job_role }}</h2>
+          <span class="text-blue-200">•</span>
+          <span class="text-lg">{{ company_name }}</span>
+        </div>
+      </div>
 
-{% block content %}
-<div class="container mx-auto px-4 py-8 max-w-3xl">
-    <div class="bg-white rounded-lg shadow-lg p-6">
-        <h1 class="text-2xl font-bold text-blue-600 mb-6">Interview Preparation Results</h1>
-        
-        <h2 class="text-xl font-semibold text-gray-800">You are applying for {{ job_role }} at {{ company_name }}</h2>
-
-        <h2 class="text-lg font-semibold text-gray-800 mt-4">Simplified Job Description</h2>
-        <p class="text-gray-600 mt-2">{{ analysis.simplified_description }}</p>
-        
-        <h2 class="text-lg font-semibold text-gray-800 mt-6">Skills Required</h2>
-        <ul class="list-disc ml-6 text-gray-600">
-            {% for skill in analysis.skills %}
-                <li>{{ skill }}</li>
-            {% endfor %}
-        </ul>
-        
-        <h2 class="text-lg font-semibold text-gray-800 mt-6">Key Benefits</h2>
-        <ul class="list-disc ml-6 text-gray-600">
-            {% for benefit in analysis.benefits %}
-                <li>{{ benefit }}</li>
-            {% endfor %}
-        </ul>
-        
-        <h2 class="text-lg font-semibold text-gray-800 mt-6">Future Interview Process Steps</h2>
-        <ol class="list-decimal ml-6 text-gray-600">
-            {% for step in analysis.interview_steps %}
-                <li>{{ step }}</li>
-            {% endfor %}
-        </ol>
-
-        <a href="{% url 'ai_job_info' %}" class="block mt-8 text-center bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 transition">
-            Analyze Another Job
-        </a>
+      <!-- Job Summary Card -->
+      <div class="p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <svg
+            class="w-5 h-5 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            ></path>
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900">Job Overview</h3>
+        </div>
+        <div class="text-gray-700 leading-relaxed">
+          {{ analysis.simplified_description }}
+        </div>
+      </div>
     </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <!-- Skills Required Section -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <svg
+            class="w-5 h-5 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            ></path>
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900">Required Skills</h3>
+        </div>
+        <ul class="space-y-3">
+          {% for skill in analysis.skills %}
+          <li class="flex items-start gap-2">
+            <svg
+              class="w-5 h-5 text-green-500 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+            <span class="text-gray-700">{{ skill }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+
+      <!-- Benefits Section -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="flex items-center gap-2 mb-4">
+          <svg
+            class="w-5 h-5 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"
+            ></path>
+          </svg>
+          <h3 class="text-lg font-semibold text-gray-900">Key Benefits</h3>
+        </div>
+        <ul class="space-y-3">
+          {% for benefit in analysis.benefits %}
+          <li class="flex items-start gap-2">
+            <svg
+              class="w-5 h-5 text-blue-500 mt-0.5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 13l4 4L19 7"
+              ></path>
+            </svg>
+            <span class="text-gray-700">{{ benefit }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Interview Process Section -->
+    <div class="bg-white rounded-xl shadow-lg p-6 mt-6">
+      <div class="flex items-center gap-2 mb-6">
+        <svg
+          class="w-5 h-5 text-blue-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+          ></path>
+        </svg>
+        <h3 class="text-lg font-semibold text-gray-900">Interview Process</h3>
+      </div>
+      <div class="relative">
+        <div class="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-200"></div>
+        <ul class="relative space-y-6">
+          {% for step in analysis.interview_steps %}
+          <li class="flex items-start gap-4">
+            <div
+              class="relative flex items-center justify-center flex-shrink-0 w-8 h-8 bg-blue-100 rounded-full"
+            >
+              <span class="text-blue-600 font-semibold"
+                >{{ forloop.counter }}</span
+              >
+            </div>
+            <div class="flex-grow pt-1">
+              <p class="text-gray-700">{{ step }}</p>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-8 flex justify-center gap-4">
+      <a
+        href="{% url 'ai_job_info' %}"
+        class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+      >
+        <svg
+          class="w-5 h-5 mr-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+          ></path>
+        </svg>
+        Analyze Another Job
+      </a>
+      <button
+        onclick="window.print()"
+        class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+      >
+        <svg
+          class="w-5 h-5 mr-2"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"
+          ></path>
+        </svg>
+        Print Results
+      </button>
+    </div>
+  </div>
 </div>
+
 {% endblock %}

@@ -1,174 +1,562 @@
-{% extends 'prep_app/base.html' %}
-{% load form_tags %}
+{% extends 'prep_app/base.html' %} 
+{% load form_tags %} 
 {% load widget_tweaks %}
 
+{% block css %}
+<style>
+  @keyframes progressAnimation {
+    from {
+      width: 0%;
+    }
+    to {
+      width: 100%;
+    }
+  }
+
+  .progress-animate {
+    animation: progressAnimation 2s ease-in-out forwards;
+    transition: background-color 0.5s ease;
+  }
+
+  .file-uploaded .progress-bar {
+    background-color: #22c55e;
+  }
+</style>
+{% endblock %} 
 
 {% block content %}
-<div class="container mx-auto px-4 py-8 max-w-3xl">
-    <div class="bg-white rounded-lg shadow-lg overflow-hidden">
-        <!-- Header Section -->
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-7xl mx-auto">
+    <!-- Header Section -->
+    <div class="text-center mb-12">
+      <h1 class="text-3xl font-bold text-gray-900 mb-4">CV Analysis Tool</h1>
+      <p class="text-lg text-gray-600">
+        Optimize your CV for your dream job using AI-powered analysis
+      </p>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Left Column - Form -->
+      <div class="bg-white rounded-xl shadow-lg overflow-hidden">
         <div class="bg-blue-600 px-6 py-4">
-            <h1 class="text-2xl font-bold text-white">CV Analysis</h1>
-            <p class="text-blue-100 mt-1">Upload your CV and provide job details to get a personalized analysis.</p>
+          <h2 class="text-xl font-semibold text-white">
+            Upload Your Information
+          </h2>
+          <p class="text-blue-100 text-sm mt-1">
+            Fill in the details below for personalized analysis
+          </p>
         </div>
 
-        <!-- Form Section -->
         <form method="POST" enctype="multipart/form-data" class="p-6 space-y-6">
-            {% csrf_token %}
+          {% csrf_token %}
 
-            <!-- Job Role Field -->
-            <div class="space-y-2">
-                <label for="{{ form.job_role.id_for_label }}" class="block text-sm font-medium text-gray-700">
-                    Job Role
-                </label>
-                <div class="mt-1">
-                    {{ form.job_role|addclass:"appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" }}
-                </div>
-                {% if form.job_role.errors %}
-                    <p class="text-red-600 text-sm mt-1">{{ form.job_role.errors.0 }}</p>
-                {% endif %}
+          <!-- Job Role Field -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700"
+              >Job Role</label
+            >
+            <div class="mt-1">
+              {{ form.job_role|addclass:"appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" }}
             </div>
+            {% if form.job_role.errors %}
+            <p class="text-red-600 text-sm">{{ form.job_role.errors.0 }}</p>
+            {% endif %}
+          </div>
 
-            <!-- Company Name Field -->
-            <div class="space-y-2">
-                <label for="{{ form.company_name.id_for_label }}" class="block text-sm font-medium text-gray-700">
-                    Company Name
-                </label>
-                <div class="mt-1">
-                    {{ form.company_name|addclass:"appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" }}
-                </div>
-                {% if form.company_name.errors %}
-                    <p class="text-red-600 text-sm mt-1">{{ form.company_name.errors.0 }}</p>
-                {% endif %}
+          <!-- Company Name Field -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700"
+              >Company Name</label
+            >
+            <div class="mt-1">
+              {{ form.company_name|addclass:"appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm" }}
             </div>
+            {% if form.company_name.errors %}
+            <p class="text-red-600 text-sm">{{ form.company_name.errors.0 }}</p>
+            {% endif %}
+          </div>
 
-            <!-- Job Description Field -->
-            <div class="space-y-2">
-                <label for="{{ form.job_description.id_for_label }}" class="block text-sm font-medium text-gray-700">
-                    Job Description
-                </label>
-                <div class="mt-1">
-                    {{ form.job_description|addclass:"appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm h-32" }}
-                </div>
-                {% if form.job_description.errors %}
-                    <p class="text-red-600 text-sm mt-1">{{ form.job_description.errors.0 }}</p>
-                {% endif %}
+          <!-- Job Description Field -->
+          <div class="space-y-2">
+            <label class="block text-sm font-medium text-gray-700"
+              >Job Description</label
+            >
+            <div class="mt-1">
+              {{ form.job_description|addclass:"appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm h-32" }}
             </div>
+            {% if form.job_description.errors %}
+            <p class="text-red-600 text-sm">
+              {{ form.job_description.errors.0 }}
+            </p>
+            {% endif %}
+          </div>
 
-            <!-- CV Upload Field -->
-            <div class="space-y-2">
-                <label for="{{ form.cv_file.id_for_label }}" class="block text-sm font-medium text-gray-700">
-                    Upload Your CV (PDF or Text file)
-                </label>
-                <div class="mt-1">
-                    <div class="flex items-center justify-center w-full">
-                        <label for="cv-file-input" class="w-full flex flex-col items-center px-4 py-6 bg-white rounded-lg border-2 border-dashed border-gray-300 cursor-pointer hover:border-blue-500">
-                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg class="w-10 h-10 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
-                                </svg>
-                                <p class="mt-2 text-sm text-gray-500">
-                                    <span class="font-semibold">Click to upload</span> or drag and drop
-                                </p>
-                                <p class="text-xs text-gray-500 mt-1">
-                                    PDF or TXT files only
-                                </p>
-                            </div>
-                            {{ form.cv_file|add_class:"hidden"|attr:"id:cv-file-input" }}
-                        </label>
+          <!-- File Upload Field -->
+          <div
+            data-hs-file-upload='{
+                        "url": "/upload",
+                        "extensions": {
+                          "default": {
+                            "class": "shrink-0 size-5"
+                          },
+                          "pdf": {
+                            "class": "shrink-0 size-5"
+                          },
+                          "doc": {
+                            "class": "shrink-0 size-5"
+                          },
+                          "docx": {
+                            "class": "shrink-0 size-5"
+                          }
+                        }
+                      }'
+          >
+            <!-- Keep the hidden form field -->
+            {{ form.cv_file|add_class:"hidden"|attr:"id:cv-file-input" }}
+
+            <template data-hs-file-upload-preview="">
+              <div
+                class="p-3 bg-white border border-solid border-gray-300 rounded-xl"
+              >
+                <div class="mb-1 flex justify-between items-center">
+                  <div class="flex items-center gap-x-3">
+                    <span
+                      class="size-10 flex justify-center items-center border border-gray-200 text-gray-500 rounded-lg"
+                      data-hs-file-upload-file-icon=""
+                    >
+                      <img class="rounded-lg hidden" data-dz-thumbnail="" />
+                    </span>
+                    <div>
+                      <p class="text-sm font-medium text-gray-800">
+                        <span
+                          class="truncate inline-block max-w-[300px] align-bottom"
+                          data-hs-file-upload-file-name=""
+                        ></span
+                        >.<span data-hs-file-upload-file-ext=""></span>
+                      </p>
+                      <p
+                        class="text-xs text-gray-500"
+                        data-hs-file-upload-file-size=""
+                      ></p>
                     </div>
-                    <!-- File Display Area -->
-                    <div id="file-display" class="hidden mt-3 p-3 bg-gray-50 rounded-md">
-                        <div class="flex items-center justify-between">
-                            <div class="flex items-center space-x-2">
-                                <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                                </svg>
-                                <span id="file-name" class="text-sm text-gray-600"></span>
-                            </div>
-                            <button type="button" id="remove-file" class="text-sm text-red-600 hover:text-red-800">
-                                Remove
-                            </button>
-                        </div>
-                    </div>
+                  </div>
+                  <div class="flex items-center gap-x-2">
+                    <button
+                      type="button"
+                      class="text-gray-500 hover:text-gray-800"
+                      data-hs-file-upload-remove=""
+                    >
+                      <svg
+                        class="shrink-0 size-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        <line x1="10" x2="10" y1="11" y2="17"></line>
+                        <line x1="14" x2="14" y1="11" y2="17"></line>
+                      </svg>
+                    </button>
+                  </div>
                 </div>
-                {% if form.cv_file.errors %}
-                    <p class="text-red-600 text-sm mt-1">{{ form.cv_file.errors.0 }}</p>
-                {% endif %}
+
+                <div class="flex items-center gap-x-3 whitespace-nowrap">
+                  <div
+                    class="flex w-full h-2 bg-gray-200 rounded-full overflow-hidden"
+                    role="progressbar"
+                    aria-valuenow="0"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    data-hs-file-upload-progress-bar=""
+                  >
+                    <div
+                      class="flex flex-col justify-center rounded-full overflow-hidden bg-blue-600 text-xs text-white text-center whitespace-nowrap transition-all duration-500 hs-file-upload-complete:bg-green-500"
+                      style="width: 0"
+                      data-hs-file-upload-progress-bar-pane=""
+                    ></div>
+                  </div>
+                  <div class="w-10 text-end">
+                    <span class="text-sm text-gray-800">
+                      <span data-hs-file-upload-progress-bar-value="">0</span>%
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </template>
+
+            <!-- File Upload Trigger Area -->
+            <div
+              class="cursor-pointer p-6 flex justify-center bg-white border-2 border-dashed border-gray-300 rounded-xl"
+              data-hs-file-upload-trigger=""
+            >
+              <div class="text-center">
+                <span
+                  class="inline-flex justify-center items-center size-16 bg-gray-100 text-gray-800 rounded-full"
+                >
+                  <svg
+                    class="shrink-0 size-6"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" x2="12" y1="3" y2="15"></line>
+                  </svg>
+                </span>
+
+                <div
+                  class="mt-4 flex flex-wrap justify-center text-sm leading-6 text-gray-600"
+                >
+                  <span class="pe-1 font-medium text-gray-800">
+                    Drop your CV here or
+                  </span>
+                  <span
+                    class="bg-white font-semibold mx-1 text-blue-600 hover:text-blue-700 rounded-lg decoration-2 hover:underline focus-within:outline-none focus-within:ring-2 focus-within:ring-blue-600 focus-within:ring-offset-2"
+                  >
+                    browse</span
+                  >
+                </div>
+
+                <p class="mt-1 text-xs text-gray-400">
+                  PDF, DOC, DOCX up to 2MB
+                </p>
+              </div>
             </div>
 
-            <!-- Submit Button -->
-            <div class="pt-4">
-                <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
-                    Analyze CV
-                </button>
-            </div>
+            <div
+              class="mt-4 space-y-2 empty:mt-0"
+              data-hs-file-upload-previews=""
+            ></div>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="pt-4">
+            <button
+              type="submit"
+              class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+            >
+              Analyze CV
+            </button>
+          </div>
         </form>
+      </div>
+
+      <!-- Right Column - Information -->
+      <div class="space-y-6">
+        <!-- How It Works Section -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h2
+            class="text-xl font-semibold text-gray-900 mb-4 flex items-center"
+          >
+            <svg
+              class="w-6 h-6 text-blue-600 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            How It Works
+          </h2>
+          <div class="space-y-4">
+            <div class="flex items-start">
+              <div
+                class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-semibold"
+              >
+                1
+              </div>
+              <p class="ml-3 text-gray-600">
+                Upload your CV and provide the job details you're interested in
+              </p>
+            </div>
+            <div class="flex items-start">
+              <div
+                class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-semibold"
+              >
+                2
+              </div>
+              <p class="ml-3 text-gray-600">
+                Our AI analyzes your CV against the job requirements
+              </p>
+            </div>
+            <div class="flex items-start">
+              <div
+                class="flex-shrink-0 h-6 w-6 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-semibold"
+              >
+                3
+              </div>
+              <p class="ml-3 text-gray-600">
+                Get detailed insights and recommendations to improve your CV
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- What You'll Get Section -->
+        <div class="bg-white rounded-xl shadow-lg p-6">
+          <h2
+            class="text-xl font-semibold text-gray-900 mb-4 flex items-center"
+          >
+            <svg
+              class="w-6 h-6 text-blue-600 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            What You'll Get
+          </h2>
+          <div class="grid grid-cols-1 gap-4">
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h3 class="font-medium text-gray-900 mb-1">Match Score</h3>
+              <p class="text-sm text-gray-600">
+                See how well your CV matches the job requirements
+              </p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h3 class="font-medium text-gray-900 mb-1">Keyword Analysis</h3>
+              <p class="text-sm text-gray-600">
+                Identify important keywords present or missing in your CV
+              </p>
+            </div>
+            <div class="bg-gray-50 p-4 rounded-lg">
+              <h3 class="font-medium text-gray-900 mb-1">
+                Skills Gap Analysis
+              </h3>
+              <p class="text-sm text-gray-600">
+                Discover which required skills are missing from your CV
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pro Tips -->
+        <div class="bg-blue-50 rounded-xl p-6 border border-blue-100">
+          <h2
+            class="text-lg font-semibold text-blue-900 mb-3 flex items-center"
+          >
+            <svg
+              class="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M13 10V3L4 14h7v7l9-11h-7z"
+              />
+            </svg>
+            Pro Tips
+          </h2>
+          <ul class="space-y-2 text-sm text-blue-800">
+            <li class="flex items-center">
+              <svg
+                class="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              Copy the full job description for best results
+            </li>
+            <li class="flex items-center">
+              <svg
+                class="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              Use a clean, formatting-free CV file
+            </li>
+            <li class="flex items-center">
+              <svg
+                class="w-4 h-4 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+              Include both technical skills and soft skills
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
+  </div>
 </div>
-
-<!-- Add this script at the end of your template -->
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const fileInput = document.getElementById('cv-file-input');
-        const fileDisplay = document.getElementById('file-display');
-        const fileName = document.getElementById('file-name');
-        const removeButton = document.getElementById('remove-file');
+  document.addEventListener("DOMContentLoaded", function () {
+    const fileUpload = document.querySelector("[data-hs-file-upload]");
+    const hiddenInput = document.getElementById("cv-file-input");
 
-        fileInput.addEventListener('change', function(e) {
-            if (this.files && this.files[0]) {
-                fileName.textContent = this.files[0].name;
-                fileDisplay.classList.remove('hidden');
-            }
-        });
+    if (fileUpload && hiddenInput) {
+      const dropZone = fileUpload.querySelector(
+        "[data-hs-file-upload-trigger]"
+      );
+      const previewsContainer = fileUpload.querySelector(
+        "[data-hs-file-upload-previews]"
+      );
+      const previewTemplate = fileUpload.querySelector(
+        "[data-hs-file-upload-preview]"
+      ).innerHTML;
 
-        removeButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            fileInput.value = '';
-            fileDisplay.classList.add('hidden');
-            fileName.textContent = '';
-        });
+      dropZone.addEventListener("click", () => {
+        hiddenInput.click();
+      });
 
-        // Add drag and drop functionality
-        const dropZone = fileInput.parentElement;
-        
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, preventDefaults, false);
-        });
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("border-blue-500");
+      });
 
-        function preventDefaults (e) {
-            e.preventDefault();
-            e.stopPropagation();
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("border-blue-500");
+      });
+
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("border-blue-500");
+        if (e.dataTransfer.files.length) {
+          hiddenInput.files = e.dataTransfer.files;
+          updatePreview(e.dataTransfer.files[0]);
         }
+      });
 
-        ['dragenter', 'dragover'].forEach(eventName => {
-            dropZone.addEventListener(eventName, highlight, false);
+      hiddenInput.addEventListener("change", (e) => {
+        if (e.target.files.length) {
+          updatePreview(e.target.files[0]);
+        }
+      });
+
+      function updatePreview(file) {
+        previewsContainer.innerHTML = previewTemplate;
+        const preview = previewsContainer.children[0];
+
+        // Update file info
+        preview.querySelector("[data-hs-file-upload-file-name]").textContent =
+          file.name.split(".").slice(0, -1).join(".");
+        preview.querySelector("[data-hs-file-upload-file-ext]").textContent =
+          file.name.split(".").pop();
+        preview.querySelector("[data-hs-file-upload-file-size]").textContent =
+          formatFileSize(file.size);
+
+        // Get progress elements
+        const progressBar = preview.querySelector(
+          "[data-hs-file-upload-progress-bar-pane]"
+        );
+        const progressValue = preview.querySelector(
+          "[data-hs-file-upload-progress-bar-value]"
+        );
+
+        // Simulate file upload with progress
+        simulateFileUpload(file, progressBar, progressValue);
+
+        // Handle remove button
+        preview
+          .querySelector("[data-hs-file-upload-remove]")
+          .addEventListener("click", () => {
+            hiddenInput.value = "";
+            previewsContainer.innerHTML = "";
+          });
+      }
+
+      function simulateFileUpload(file, progressBar, progressValue) {
+        // Create FormData
+        const formData = new FormData();
+        formData.append("cv_file", file);
+
+        // Create XMLHttpRequest
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "/upload", true);
+
+        // Track upload progress
+        xhr.upload.addEventListener("progress", (e) => {
+          if (e.lengthComputable) {
+            const percentComplete = Math.round((e.loaded / e.total) * 100);
+            progressBar.style.width = percentComplete + "%";
+            progressValue.textContent = percentComplete;
+          }
         });
 
-        ['dragleave', 'drop'].forEach(eventName => {
-            dropZone.addEventListener(eventName, unhighlight, false);
+        // Handle upload completion
+        xhr.addEventListener("load", () => {
+          if (xhr.status === 200) {
+            progressBar.style.width = "100%";
+            progressValue.textContent = "100";
+            progressBar.classList.add("bg-green-500"); // Change to green on success
+          } else {
+            progressBar.classList.add("bg-red-500"); // Change to red on error
+            console.error("Upload failed");
+          }
         });
 
-        function highlight(e) {
-            dropZone.classList.add('border-blue-500', 'bg-blue-50');
-        }
+        // Handle upload error
+        xhr.addEventListener("error", () => {
+          progressBar.classList.add("bg-red-500");
+          console.error("Upload failed");
+        });
 
-        function unhighlight(e) {
-            dropZone.classList.remove('border-blue-500', 'bg-blue-50');
-        }
+        // Send the request
+        xhr.send(formData);
+      }
 
-        dropZone.addEventListener('drop', handleDrop, false);
-
-        function handleDrop(e) {
-            const dt = e.dataTransfer;
-            const files = dt.files;
-            fileInput.files = files;
-            
-            if (files && files[0]) {
-                fileName.textContent = files[0].name;
-                fileDisplay.classList.remove('hidden');
-            }
-        }
-    });
+      function formatFileSize(bytes) {
+        if (bytes === 0) return "0 Bytes";
+        const k = 1024;
+        const sizes = ["Bytes", "KB", "MB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i];
+      }
+    }
+  });
 </script>
+
 {% endblock %}

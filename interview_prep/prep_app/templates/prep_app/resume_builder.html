@@ -1,0 +1,680 @@
+{% extends 'prep_app/base.html' %} {% load static %} {% block content %}
+<div class="min-h-screen bg-gray-50 py-12">
+  <div class="container mx-auto px-4">
+    <div class="grid md:grid-cols-2 gap-8">
+      <!-- Form Section -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <!-- Tab Navigation -->
+        <div class="flex space-x-4 border-b border-gray-200 mb-6">
+          <button
+            class="tab-btn active px-4 py-2 text-blue-600 border-b-2 border-blue-600 font-medium"
+            data-tab="personal"
+          >
+            Personal Info
+          </button>
+          <button
+            class="tab-btn px-4 py-2 text-gray-500 hover:text-gray-700 font-medium"
+            data-tab="experience"
+          >
+            Experience
+          </button>
+          <button
+            class="tab-btn px-4 py-2 text-gray-500 hover:text-gray-700 font-medium"
+            data-tab="education"
+          >
+            Education
+          </button>
+          <button
+            class="tab-btn px-4 py-2 text-gray-500 hover:text-gray-700 font-medium"
+            data-tab="skills"
+          >
+            Skills
+          </button>
+        </div>
+
+        <!-- Form Content -->
+        <div class="tab-content-container">
+          <!-- Personal Info Tab -->
+          <div id="personal-tab" class="tab-content active">
+            {% csrf_token %}
+            <div class="space-y-4">
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Full Name</label
+                >
+                <input
+                  type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  id="fullName"
+                />
+              </div>
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Address</label
+                >
+                <input
+                  type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  id="address"
+                />
+              </div>
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Phone</label
+                >
+                <input
+                  type="tel"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  id="phone"
+                />
+              </div>
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Email</label
+                >
+                <input
+                  type="email"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  id="email"
+                />
+              </div>
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Professional Summary</label
+                >
+                <textarea
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  rows="4"
+                  id="summary"
+                ></textarea>
+              </div>
+              <button
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
+              >
+                Save & Continue
+              </button>
+            </div>
+          </div>
+
+          <!-- Experience Tab -->
+          <div id="experience-tab" class="tab-content hidden">
+            {% csrf_token %}
+            <div class="space-y-4">
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Job Title</label
+                >
+                <input
+                  type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  id="jobTitle"
+                />
+              </div>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="form-group">
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >Start Date</label
+                  >
+                  <div
+                    class="relative flex rounded-lg shadow-sm bg-white border border-gray-300"
+                  >
+                    <select
+                      id="startMonth"
+                      class="appearance-none w-20 pl-3 py-2 bg-transparent border-0 focus:ring-0 focus:outline-none text-gray-500"
+                    ></select>
+                    <span class="text-gray-500 py-2">/</span>
+                    <select
+                      id="startYear"
+                      class="appearance-none w-24 pl-2 pr-8 py-2 bg-transparent border-0 focus:ring-0 focus:outline-none text-gray-500"
+                    ></select>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label class="block text-sm font-medium text-gray-700 mb-1"
+                    >End Date</label
+                  >
+                  <div
+                    class="relative flex rounded-lg shadow-sm bg-white border border-gray-300"
+                  >
+                    <select
+                      id="endMonth"
+                      class="appearance-none w-20 pl-3 py-2 bg-transparent border-0 focus:ring-0 focus:outline-none text-gray-500"
+                    ></select>
+                    <span class="text-gray-500 py-2">/</span>
+                    <select
+                      id="endYear"
+                      class="appearance-none w-24 pl-2 pr-8 py-2 bg-transparent border-0 focus:ring-0 focus:outline-none text-gray-500"
+                    ></select>
+                  </div>
+                </div>
+              </div>
+              <div class="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="currentPosition"
+                  class="rounded text-blue-600 focus:ring-blue-500"
+                />
+                <label class="text-sm text-gray-700"
+                  >This is my current position</label
+                >
+              </div>
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Company</label
+                >
+                <input
+                  type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  id="company"
+                />
+              </div>
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >City</label
+                >
+                <input
+                  type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  id="city"
+                />
+              </div>
+
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Description Points</label
+                >
+                <div
+                  id="description-points"
+                  class="border border-gray-300 rounded-md p-4 space-y-2"
+                >
+                  <div class="flex items-center space-x-2">
+                    <input
+                      type="text"
+                      class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Add description point"
+                    />
+                    <button
+                      class="add-point-btn text-blue-600 hover:text-blue-700"
+                    >
+                      <svg
+                        class="w-5 h-5"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M12 4v16m8-8H4"
+                        ></path>
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <button
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
+              >
+                Add Experience
+              </button>
+            </div>
+          </div>
+
+          <!-- Education Tab -->
+          <div id="education-tab" class="tab-content hidden">
+            {% csrf_token %}
+            <div class="space-y-4">
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Institution Name</label
+                >
+                <input
+                  type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  id="institution"
+                />
+              </div>
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Degree</label
+                >
+                <input
+                  type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  id="degree"
+                />
+              </div>
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Graduation Date</label
+                >
+                <input
+                  type="date"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  id="gradDate"
+                />
+              </div>
+              <button
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
+              >
+                Add Education
+              </button>
+            </div>
+          </div>
+
+          <!-- Skills Tab -->
+          <div id="skills-tab" class="tab-content hidden">
+            {% csrf_token %}
+            <div class="space-y-4">
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Skill Name</label
+                >
+                <input
+                  type="text"
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  id="skillName"
+                />
+              </div>
+              <div class="form-group">
+                <label class="block text-sm font-medium text-gray-700 mb-1"
+                  >Skill Level</label
+                >
+                <select
+                  class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  id="skillLevel"
+                >
+                  <option value="beginner">Beginner</option>
+                  <option value="intermediate">Intermediate</option>
+                  <option value="advanced">Advanced</option>
+                  <option value="expert">Expert</option>
+                </select>
+              </div>
+              <button
+                class="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition duration-200"
+              >
+                Add Skill
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Resume Preview -->
+      <div class="relative">
+        <div
+          id="resume-preview"
+          class="bg-white w-[210mm] h-[297mm] p-8 shadow-lg mx-auto transform scale-[0.7] origin-top"
+        >
+          <div class="bg-white p-8" id="resume-preview">
+            <!-- Header -->
+            <div class="text-center mb-6">
+              <h1 class="text-4xl font-bold mb-4" id="preview-name">
+                DOM WEBSTER
+              </h1>
+              <div
+                class="flex justify-center items-center space-x-4 text-sm"
+                id="preview-contact"
+              >
+                <span>46 Roman Rd, Leeds LS2 3ZR</span>
+                <span>◆</span>
+                <span>07912 345 678</span>
+                <span>◆</span>
+                <span>dom.webster@example.co.uk</span>
+              </div>
+            </div>
+
+            <!-- Professional Summary -->
+            <div class="mb-6">
+              <div class="flex items-center mb-4">
+                <div class="flex-grow h-px bg-black"></div>
+                <h2 class="mx-4 text-lg font-bold">PROFESSIONAL SUMMARY</h2>
+                <div class="flex-grow h-px bg-black"></div>
+              </div>
+              <p class="text-justify" id="preview-summary">
+                Motivated Care Assistant with 10 years of experience in the Care
+                industry. Offering expertise in person-centred care,
+                implementation and monitoring of individual care plans and
+                management of resident assessments and files. Energetic
+                self-starter and team builder able to navigate high-stress
+                situations. Well-versed in monitoring clients with developmental
+                disabilities and adhering to patient care plans.
+              </p>
+            </div>
+
+            <!-- Work History -->
+            <div class="mb-6">
+              <div class="flex items-center mb-4">
+                <div class="flex-grow h-px bg-black"></div>
+                <h2 class="mx-4 text-lg font-bold">WORK HISTORY</h2>
+                <div class="flex-grow h-px bg-black"></div>
+              </div>
+              <div id="preview-experience">
+                <div class="mb-4">
+                  <div
+                    class="flex justify-between font-bold"
+                    id="preview-job-title"
+                  >
+                    <span>Senior Care Assistant</span>
+                    <span>07/2014 - Current</span>
+                  </div>
+                  <div class="font-bold" id="preview-location">
+                    Private Care Home - Edinburgh
+                  </div>
+                  <ul class="list-disc ml-5 mt-2" id="preview-description">
+                    <li>
+                      Met with patients and families to discuss care and plan of
+                      action for future.
+                    </li>
+                    <li>
+                      Implemented new team onboarding programme, reducing
+                      training time from four weeks to two.
+                    </li>
+                    <li>
+                      Administered all necessary medications as directed by care
+                      plan.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- Skills -->
+            <div class="mb-6">
+              <div class="flex items-center mb-4">
+                <div class="flex-grow h-px bg-black"></div>
+                <h2 class="mx-4 text-lg font-bold">SKILLS</h2>
+                <div class="flex-grow h-px bg-black"></div>
+              </div>
+              <div class="grid grid-cols-2 gap-4" id="preview-skills">
+                <ul class="list-disc ml-5">
+                  <li>Strong verbal communication</li>
+                  <li>Attention to detail</li>
+                  <li>Community activities</li>
+                  <li>Medication administration</li>
+                  <li>Care plan management</li>
+                </ul>
+                <ul class="list-disc ml-5">
+                  <li>Risk management processes and analysis</li>
+                  <li>Client safety and First Aid</li>
+                  <li>Compassionate client care</li>
+                  <li>Behaviour redirection</li>
+                </ul>
+              </div>
+            </div>
+
+            <!-- Education -->
+            <div>
+              <div class="flex items-center mb-4">
+                <div class="flex-grow h-px bg-black"></div>
+                <h2 class="mx-4 text-lg font-bold">EDUCATION</h2>
+                <div class="flex-grow h-px bg-black"></div>
+              </div>
+              <div id="preview-education">
+                <div class="mb-3">
+                  <div class="font-bold">
+                    NVQ Level 3: Health And Social Care, 2013
+                  </div>
+                  <div>Edinburgh College - Edinburgh</div>
+                </div>
+                <div>
+                  <div class="font-bold">
+                    NVQ Level 2: Health And Social Care, 2008
+                  </div>
+                  <div>Edinburgh College - Edinburgh</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/resume_builder/date_select.js"></script>
+
+<script>
+  // Tab Switching Logic
+  document.addEventListener("DOMContentLoaded", function () {
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const tabContents = document.querySelectorAll(".tab-content");
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        // Remove active classes
+        tabBtns.forEach((b) => {
+          b.classList.remove(
+            "active",
+            "text-blue-600",
+            "border-b-2",
+            "border-blue-600"
+          );
+          b.classList.add("text-gray-500");
+        });
+        tabContents.forEach((c) => c.classList.add("hidden"));
+
+        // Add active class to clicked button
+        btn.classList.add(
+          "active",
+          "text-blue-600",
+          "border-b-2",
+          "border-blue-600"
+        );
+        btn.classList.remove("text-gray-500");
+
+        // Show corresponding content
+        const tabId = btn.getAttribute("data-tab");
+        document.getElementById(`${tabId}-tab`).classList.remove("hidden");
+      });
+    });
+
+    // Real-time Preview Updates for Personal Info
+    const personalFields = {
+      fullName: "preview-name",
+      email: "preview-contact",
+      phone: "preview-contact",
+      address: "preview-contact",
+      summary: "preview-summary",
+    };
+
+    Object.keys(personalFields).forEach((fieldId) => {
+      document.getElementById(fieldId)?.addEventListener("input", (e) => {
+        const previewElement = document.getElementById(personalFields[fieldId]);
+        if (fieldId === "fullName") {
+          previewElement.textContent = e.target.value.toUpperCase();
+        } else if (fieldId === "summary") {
+          previewElement.textContent = e.target.value;
+        } else {
+          updateContactInfo();
+        }
+      });
+    });
+
+    function updateContactInfo() {
+      const address = document.getElementById("address").value;
+      const phone = document.getElementById("phone").value;
+      const email = document.getElementById("email").value;
+      const contactString = `${address} ◆ ${phone} ◆ ${email}`;
+      document.getElementById("preview-contact").textContent = contactString;
+    }
+
+    const workingFields = {
+      job: "preview-job-title",
+      "start-time": "preview-job-title",
+      "end-time": "preview-job-title",
+      "job-place": "preview-location",
+      location: "preview-location",
+    };
+
+    Object.keys(workingFields).forEach((fieldId) => {
+      document.getElementById(fieldId)?.addEventListener("input", (e) => {
+        const previewElement = document.getElementById(personalFields[fieldId]);
+        if (fieldId === "job") {
+          previewElement.textContent = e.target.value.toUpperCase();
+        } else if (fieldId === "summary") {
+          previewElement.textContent = e.target.value;
+        } else {
+          updateContactInfo();
+        }
+      });
+    });
+
+    let experienceCount = 0;
+    document
+      .querySelector('button[data-tab="experience"]')
+      .addEventListener("click", () => {
+        const currentPositionCheckbox =
+          document.getElementById("currentPosition");
+        const endDateInput = document.getElementById("endDate");
+
+        currentPositionCheckbox.addEventListener("change", (e) => {
+          endDateInput.disabled = e.target.checked;
+          if (e.target.checked) {
+            endDateInput.value = "";
+          }
+        });
+      });
+
+    // Add Experience
+    document
+      .querySelector("#experience-tab button:last-child")
+      .addEventListener("click", () => {
+        const jobTitle = document.getElementById("jobTitle").value;
+        const company = document.getElementById("company").value;
+        const city = document.getElementById("city").value;
+        const startDate = document.getElementById("startDate").value;
+        const endDate = document.getElementById("currentPosition").checked
+          ? "Current"
+          : document.getElementById("endDate").value;
+        const descriptionPoints = Array.from(
+          document.querySelectorAll("#description-points input")
+        )
+          .map((input) => input.value)
+          .filter(Boolean);
+
+        const experienceHTML = `
+            <div class="mb-4 experience-entry" data-id="${experienceCount}">
+                <div class="font-semibold text-gray-900">${jobTitle}</div>
+                <div class="text-gray-600">${company} - ${city}</div>
+                <div class="text-sm text-gray-500">${formatDate(startDate)} - ${
+          endDate === "Current" ? "Current" : formatDate(endDate)
+        }</div>
+                <ul class="list-disc ml-4 mt-2">
+                    ${descriptionPoints
+                      .map((point) => `<li class="text-gray-700">${point}</li>`)
+                      .join("")}
+                </ul>
+            </div>
+        `;
+
+        document
+          .getElementById("preview-experience")
+          .insertAdjacentHTML("afterbegin", experienceHTML);
+        experienceCount++;
+        clearExperienceForm();
+      });
+
+    // Add Education
+    document
+      .querySelector("#education-tab button")
+      .addEventListener("click", () => {
+        const institution = document.getElementById("institution").value;
+        const degree = document.getElementById("degree").value;
+        const gradDate = document.getElementById("gradDate").value;
+
+        const educationHTML = `
+            <div class="mb-4">
+                <div class="font-semibold text-gray-900">${degree}</div>
+                <div class="text-gray-600">${institution}</div>
+                <div class="text-sm text-gray-500">${formatDate(gradDate)}</div>
+            </div>
+        `;
+
+        document
+          .getElementById("preview-education")
+          .insertAdjacentHTML("afterbegin", educationHTML);
+        clearEducationForm();
+      });
+
+    // Add Skill
+    document
+      .querySelector("#skills-tab button")
+      .addEventListener("click", () => {
+        const skillName = document.getElementById("skillName").value;
+        const skillLevel = document.getElementById("skillLevel").value;
+
+        const skillHTML = `
+            <div class="bg-gray-50 rounded-md p-2 text-sm text-gray-700">
+                ${skillName} <span class="text-gray-500">(${skillLevel})</span>
+            </div>
+        `;
+
+        document
+          .getElementById("preview-skills")
+          .insertAdjacentHTML("beforeend", skillHTML);
+        clearSkillForm();
+      });
+
+    // Description Points Logic
+    document
+      .querySelector(".add-point-btn")
+      .addEventListener("click", addDescriptionPoint);
+
+    document
+      .getElementById("description-points")
+      .addEventListener("click", (e) => {
+        if (e.target.closest(".remove-point-btn")) {
+          e.target.closest(".flex").remove();
+        }
+      });
+
+    // Helper Functions
+    function formatDate(dateString) {
+      if (!dateString) return "";
+      const date = new Date(dateString);
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        year: "numeric",
+      });
+    }
+
+    function addDescriptionPoint() {
+      const pointsContainer = document.getElementById("description-points");
+      const newPoint = document.createElement("div");
+      newPoint.className = "flex items-center space-x-2 mt-2";
+      newPoint.innerHTML = `
+            <input type="text" class="flex-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="Add description point">
+            <button class="remove-point-btn text-red-600 hover:text-red-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+        `;
+      pointsContainer.appendChild(newPoint);
+    }
+
+    function clearExperienceForm() {
+      ["jobTitle", "company", "city", "startDate", "endDate"].forEach((id) => {
+        document.getElementById(id).value = "";
+      });
+      document.getElementById("currentPosition").checked = false;
+      document.getElementById("description-points").innerHTML = "";
+      addDescriptionPoint();
+    }
+
+    function clearEducationForm() {
+      ["institution", "degree", "gradDate"].forEach((id) => {
+        document.getElementById(id).value = "";
+      });
+    }
+
+    function clearSkillForm() {
+      document.getElementById("skillName").value = "";
+      document.getElementById("skillLevel").value = "beginner";
+    }
+  });
+</script>
+
+{% endblock %}

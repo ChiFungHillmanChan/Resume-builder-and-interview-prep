@@ -1,6 +1,55 @@
 from django import forms
-from .models import Resume, WorkExperience, Education, Skill
+from .models import Resume, WorkExperience, Education, Skill, UserSubmission
+from django.contrib.auth.forms import AuthenticationForm , UserCreationForm
+from django.contrib.auth.models import User
 
+class CustomUserCreationForm(UserCreationForm):
+    email = forms.EmailField(
+        required=True,
+        widget=forms.EmailInput(attrs={
+            'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm',
+            'placeholder': 'Enter your email'
+        })
+    )
+    
+    username = forms.CharField(
+        widget=forms.TextInput(attrs={
+            'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm',
+            'placeholder': 'Choose a username'
+        })
+    )
+    
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm',
+            'placeholder': 'Enter password'
+        })
+    )
+    
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm',
+            'placeholder': 'Confirm password'
+        })
+    )
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if User.objects.filter(email=email).exists():
+            raise forms.ValidationError('This email is already registered.')
+        return email
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.email = self.cleaned_data['email']
+        if commit:
+            user.save()
+        return user
+    
 class JobInfoForm(forms.Form):
     job_role = forms.CharField(max_length=100)
     company_name = forms.CharField(max_length=100)
@@ -117,3 +166,61 @@ class SkillForm(forms.ModelForm):
     class Meta:
         model = Skill
         exclude = ['resume', 'order']
+
+
+class CustomAuthenticationForm(AuthenticationForm):
+    remember_me = forms.BooleanField(
+        required=False,
+        initial=False,
+        widget=forms.CheckboxInput(
+            attrs={
+                'class': 'h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded',
+            }
+        )
+    )
+    username = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': 'Enter your username'
+            }
+        )
+    )
+    password = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                'class': 'appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500',
+                'placeholder': 'Enter your password'
+            }
+        )
+    )
+
+
+class CodeSubmissionForm(forms.ModelForm):
+    LANGUAGE_CHOICES = [
+        ('python', 'Python'),
+        ('java', 'Java'),
+        ('javascript', 'JavaScript'),
+        ('cpp', 'C++'),
+    ]
+
+    code = forms.CharField(
+        widget=forms.Textarea(
+            attrs={
+                'class': 'w-full h-96 font-mono bg-gray-900 text-gray-100 p-4 rounded-lg',
+                'spellcheck': 'false',
+            }
+        )
+    )
+    language = forms.ChoiceField(
+        choices=LANGUAGE_CHOICES,
+        widget=forms.Select(
+            attrs={
+                'class': 'bg-gray-800 text-gray-100 rounded-lg p-2'
+            }
+        )
+    )
+
+    class Meta:
+        model = UserSubmission
+        fields = ['code', 'language']

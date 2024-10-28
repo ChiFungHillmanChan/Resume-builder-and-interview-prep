@@ -1,0 +1,377 @@
+{% extends 'prep_app/base.html' %} 
+{% load static %} 
+{% block content %}
+
+<div class="min-h-screen bg-gray-50 py-12">
+    <div class="container mx-auto px-4">
+        <div class="grid md:grid-cols-2 gap-8">
+            <!-- Form Section -->
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex space-x-4 border-b border-gray-200 mb-6">
+                    <button data-tab="personal" class="tab-btn active text-blue-600 border-b-2 border-blue-600 px-4 py-2">Personal Info</button>
+                    <button data-tab="experience" class="tab-btn text-gray-500 px-4 py-2">Experience</button>
+                    <button data-tab="education" class="tab-btn text-gray-500 px-4 py-2">Education</button>
+                    <button data-tab="skills" class="tab-btn text-gray-500 px-4 py-2">Skills</button>
+                </div>
+
+                <div class="tab-content-container">
+                    <!-- Personal Info Tab -->
+                    <div id="personal-tab" class="tab-content active">
+                        {% csrf_token %}
+                        <div class="space-y-4">
+                            <div class="form-group">
+                                <input type="text" id="fullName" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Full Name">
+                            </div>
+                            <div class="form-group">
+                                <input type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Email">
+                            </div>
+                            <div class="form-group">
+                                <input type="tel" id="phone" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Phone">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="address" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Address">
+                            </div>
+                            <div class="form-group">
+                                <textarea id="summary" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Professional Summary" rows="4"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Experience Tab -->
+                    <div id="experience-tab" class="tab-content hidden">
+                        {% csrf_token %}
+                        <div class="space-y-4">
+                            <div class="form-group">
+                                <input type="text" id="jobTitle" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Job Title">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="company" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Company">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="city" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="City">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="form-group">
+                                    <input type="month" id="startDate" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                </div>
+                                <div class="form-group">
+                                    <input type="month" id="endDate" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <input type="checkbox" id="currentPosition" class="rounded">
+                                <label for="currentPosition">This is my current position</label>
+                            </div>
+                            <div class="form-group">
+                                <label class="block mb-2">Description Points</label>
+                                <div id="description-points" class="border border-gray-300 rounded-md p-4 space-y-2">
+                                    <div class="flex items-center space-x-2">
+                                        <input type="text" class="flex-1 px-3 py-2 border border-gray-300 rounded-md" placeholder="Add description point">
+                                        <button class="add-point-btn text-green-600 hover:text-green-700">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                                            </svg>
+                                        </button>
+                                        <button class="remove-point-btn text-red-600 hover:text-red-700">
+                                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Add Experience</button>
+                        </div>
+                    </div>
+
+                    <!-- Education Tab -->
+                    <div id="education-tab" class="tab-content hidden">
+                        {% csrf_token %}
+                        <div class="space-y-4">
+                            <div class="form-group">
+                                <input type="text" id="institution" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Institution Name">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="educationCity" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="City">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="qualification" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Qualification (e.g., Bachelor of Arts)">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="fieldOfStudy" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Field of Study">
+                            </div>
+                            <div class="form-group">
+                                <input type="text" id="honours" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Honours (Optional)">
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="form-group">
+                                    <input type="month" id="eduStartDate" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Start Date">
+                                </div>
+                                <div class="form-group">
+                                    <input type="month" id="eduEndDate" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="End Date">
+                                </div>
+                            </div>
+                            <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Add Education</button>
+                        </div>
+                    </div>
+
+                    <!-- Skills Tab -->
+                    <div id="skills-tab" class="tab-content hidden">
+                        {% csrf_token %}
+                        <div class="space-y-4">
+                            <div class="form-group">
+                                <input type="text" id="skillName" class="w-full px-3 py-2 border border-gray-300 rounded-md" placeholder="Skill Name">
+                            </div>
+                            <div class="form-group">
+                                <select id="skillLevel" class="w-full px-3 py-2 border border-gray-300 rounded-md">
+                                    <option value="Beginner">Beginner</option>
+                                    <option value="Intermediate">Intermediate</option>
+                                    <option value="Advanced">Advanced</option>
+                                    <option value="Expert">Expert</option>
+                                </select>
+                            </div>
+                            <button class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">Add Skill</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview Section - A4 Size -->
+            <div class="bg-white rounded-lg shadow-md" style="width: 21cm; height: 29.7cm; margin: 0 auto;">
+                <div id="resume-preview" class="p-8">
+                    <div class="text-center mb-8">
+                        <h1 id="preview-name" class="text-3xl font-bold text-gray-900"></h1>
+                        <div id="preview-contact" class="text-sm text-gray-600 mt-2"></div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-3">PROFESSIONAL SUMMARY</h2>
+                        <div id="preview-summary" class="text-gray-700"></div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-3">WORK HISTORY</h2>
+                        <div id="preview-experience"></div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-3">EDUCATION</h2>
+                        <div id="preview-education"></div>
+                    </div>
+
+                    <div>
+                        <h2 class="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-3">SKILLS</h2>
+                        <div id="preview-skills" class="grid grid-cols-2 gap-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Tab Switching Logic
+    const tabBtns = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            tabBtns.forEach(b => {
+                b.classList.remove('active', 'text-blue-600', 'border-b-2', 'border-blue-600');
+                b.classList.add('text-gray-500');
+            });
+            tabContents.forEach(c => c.classList.add('hidden'));
+
+            btn.classList.add('active', 'text-blue-600', 'border-b-2', 'border-blue-600');
+            btn.classList.remove('text-gray-500');
+            
+            const tabId = btn.getAttribute('data-tab');
+            document.getElementById(`${tabId}-tab`).classList.remove('hidden');
+        });
+    });
+
+    // Real-time Preview Updates
+    function setupRealtimePreview(inputId, previewId, transform = (value) => value) {
+        const input = document.getElementById(inputId);
+        if (input) {
+            input.addEventListener('input', () => {
+                const previewElement = document.getElementById(previewId);
+                if (previewElement) {
+                    previewElement.textContent = transform(input.value);
+                }
+            });
+        }
+    }
+
+    // Personal Info Real-time Updates
+    setupRealtimePreview('fullName', 'preview-name', value => value.toUpperCase());
+    setupRealtimePreview('summary', 'preview-summary');
+
+    // Contact Info Real-time Updates
+    ['address', 'phone', 'email'].forEach(field => {
+        document.getElementById(field)?.addEventListener('input', updateContactInfo);
+    });
+
+    function updateContactInfo() {
+        const address = document.getElementById('address')?.value || '';
+        const phone = document.getElementById('phone')?.value || '';
+        const email = document.getElementById('email')?.value || '';
+        const contactString = [address, phone, email].filter(Boolean).join(' ◆ ');
+        document.getElementById('preview-contact').textContent = contactString;
+    }
+
+    // Experience Section Logic
+    let experienceCount = 0;
+    
+    // Current Position Toggle
+    document.getElementById('currentPosition')?.addEventListener('change', (e) => {
+        const endDateInput = document.getElementById('endDate');
+        endDateInput.disabled = e.target.checked;
+        if (e.target.checked) {
+            endDateInput.value = '';
+        }
+    });
+
+    // Description Points Logic
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.add-point-btn')) {
+            addDescriptionPoint(e.target.closest('.flex').parentNode);
+        } else if (e.target.closest('.remove-point-btn')) {
+            const pointsContainer = document.getElementById('description-points');
+            if (pointsContainer.children.length > 1) {
+                e.target.closest('.flex').remove();
+            }
+        }
+    });
+
+    function addDescriptionPoint(container) {
+        const newPoint = document.createElement('div');
+        newPoint.className = 'flex items-center space-x-2 mt-2';
+        newPoint.innerHTML = `
+            <input type="text" class="flex-1 px-3 py-2 border border-gray-300 rounded-md" placeholder="Add description point">
+            <button class="add-point-btn text-green-600 hover:text-green-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                </svg>
+            </button>
+            <button class="remove-point-btn text-red-600 hover:text-red-700">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        `;
+        container.appendChild(newPoint);
+    }
+
+    // Add Experience Handler
+    document.querySelector('#experience-tab button:last-child')?.addEventListener('click', () => {
+        const jobTitle = document.getElementById('jobTitle').value;
+        const company = document.getElementById('company').value;
+        const city = document.getElementById('city').value;
+        const startDate = document.getElementById('startDate').value;
+        const endDate = document.getElementById('currentPosition').checked ? 'Present' : document.getElementById('endDate').value;
+        const descriptionPoints = Array.from(document.querySelectorAll('#description-points input'))
+            .map(input => input.value)
+            .filter(Boolean);
+
+        const experienceHTML = `
+            <div class="mb-4 experience-entry" data-id="${experienceCount}">
+                <div class="font-semibold text-gray-900">${jobTitle}</div>
+                <div class="text-gray-600">${company} - ${city}</div>
+                <div class="text-sm text-gray-500">${formatDate(startDate)} - ${endDate === 'Present' ? 'Present' : formatDate(endDate)}</div>
+                <ul class="list-disc ml-4 mt-2">
+                    ${descriptionPoints.map(point => `<li class="text-gray-700">${point}</li>`).join('')}
+                </ul>
+            </div>
+        `;
+
+        document.getElementById('preview-experience').insertAdjacentHTML('afterbegin', experienceHTML);
+        experienceCount++;
+        clearExperienceForm();
+    });
+
+    // Add Education Handler
+    document.querySelector('#education-tab button')?.addEventListener('click', () => {
+        const institution = document.getElementById('institution').value;
+        const city = document.getElementById('educationCity').value;
+        const qualification = document.getElementById('qualification').value;
+        const fieldOfStudy = document.getElementById('fieldOfStudy').value;
+        const honours = document.getElementById('honours').value;
+        const startDate = document.getElementById('eduStartDate').value;
+        const endDate = document.getElementById('eduEndDate').value;
+
+        const educationHTML = `
+            <div class="mb-4">
+                <div class="font-semibold text-gray-900">${qualification}${honours ? ` (${honours})` : ''}</div>
+                <div class="text-gray-700">${fieldOfStudy}</div>
+                <div class="text-gray-600">${institution}, ${city}</div>
+                <div class="text-sm text-gray-500">${formatDate(startDate)} - ${formatDate(endDate)}</div>
+            </div>
+        `;
+
+        document.getElementById('preview-education').insertAdjacentHTML('afterbegin', educationHTML);
+        clearEducationForm();
+    });
+
+    // Add Skill Handler
+    document.querySelector('#skills-tab button')?.addEventListener('click', () => {
+        const skillName = document.getElementById('skillName').value;
+        const skillLevel = document.getElementById('skillLevel').value;
+
+        const skillHTML = `
+            <div class="bg-gray-50 rounded-md p-2 text-sm text-gray-700">
+                ${skillName} <span class="text-gray-500">(${skillLevel})</span>
+            </div>
+        `;
+
+        document.getElementById('preview-skills').insertAdjacentHTML('beforeend', skillHTML);
+        clearSkillForm();
+    });
+
+    // Helper Functions
+    function formatDate(dateString) {
+        if (!dateString) return '';
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+    }
+
+    function clearExperienceForm() {
+        ['jobTitle', 'company', 'city', 'startDate', 'endDate'].forEach(id => {
+            const element = document.getElementById(id);
+            if (element) element.value = '';
+        });
+        const currentPositionCheckbox = document.getElementById('currentPosition');
+        if (currentPositionCheckbox) {
+            currentPositionCheckbox.checked = false;
+            document.getElementById('endDate').disabled = false;
+        }
+        const descriptionPoints = document.getElementById('description-points');
+        if (descriptionPoints) {
+            descriptionPoints.innerHTML = '';
+            addDescriptionPoint(descriptionPoints);
+        }
+    }
+
+    function clearEducationForm() {
+        ['institution', 'educationCity', 'qualification', 'fieldOfStudy', 'honours', 'eduStartDate', 'eduEndDate'].forEach(id => {
+            const element = document.getElementById(id);
+            if (element) element.value = '';
+        });
+    }
+
+    function clearSkillForm() {
+        const skillNameInput = document.getElementById('skillName');
+        const skillLevelSelect = document.getElementById('skillLevel');
+        if (skillNameInput) skillNameInput.value = '';
+        if (skillLevelSelect) skillLevelSelect.value = 'Beginner';
+    }
+
+    // Initialize first description point
+    const descriptionPoints = document.getElementById('description-points');
+    if (descriptionPoints && descriptionPoints.children.length === 0) {
+        addDescriptionPoint(descriptionPoints);
+    }
+});
+</script>
+{% endblock %}

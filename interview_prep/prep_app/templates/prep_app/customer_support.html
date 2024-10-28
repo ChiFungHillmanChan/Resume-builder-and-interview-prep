@@ -1,0 +1,299 @@
+{% extends 'prep_app/base.html' %} 
+{% load static %} 
+
+{% block content %}
+
+<!-- Hero Section -->
+<section class="bg-gray-50 py-12">
+  <div class="container mx-auto px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+        How can we help you?
+      </h1>
+
+      <!-- Search Bar -->
+      <div class="relative max-w-2xl mx-auto">
+        <input
+          type="text"
+          placeholder="Search for help articles..."
+          class="w-full px-12 py-4 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+        <svg
+          class="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+          />
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Help Categories -->
+<section class="py-16 bg-white">
+  <div class="container mx-auto px-6">
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Account & Billing -->
+      <div
+        class="bg-white rounded-lg shadow-lg p-8 border border-gray-100 hover:border-blue-500 transition-colors duration-300"
+      >
+        <div
+          class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6"
+        >
+          <svg
+            class="w-8 h-8 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+            />
+          </svg>
+        </div>
+        <h2 class="text-xl font-semibold mb-4 text-center">
+          Account & Billing
+        </h2>
+        <ul class="space-y-3">
+          <li>
+            <a
+              href="#"
+              class="text-gray-600 hover:text-blue-600 block transition-colors duration-300"
+              >Subscription plans & pricing</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="text-gray-600 hover:text-blue-600 block transition-colors duration-300"
+              >Change subscription</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="text-gray-600 hover:text-blue-600 block transition-colors duration-300"
+              >Account settings</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="text-gray-600 hover:text-blue-600 block transition-colors duration-300"
+              >Payment methods</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Using Platform -->
+      <div
+        class="bg-white rounded-lg shadow-lg p-8 border border-gray-100 hover:border-blue-500 transition-colors duration-300"
+      >
+        <div
+          class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6"
+        >
+          <svg
+            class="w-8 h-8 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"
+            />
+          </svg>
+        </div>
+        <h2 class="text-xl font-semibold mb-4 text-center">Using Platform</h2>
+        <ul class="space-y-3">
+          <li>
+            <a
+              href="#"
+              class="text-gray-600 hover:text-blue-600 block transition-colors duration-300"
+              >Getting started guide</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="text-gray-600 hover:text-blue-600 block transition-colors duration-300"
+              >Resume builder features</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="text-gray-600 hover:text-blue-600 block transition-colors duration-300"
+              >Job matching system</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="text-gray-600 hover:text-blue-600 block transition-colors duration-300"
+              >Interview preparation</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- What's New -->
+      <div
+        class="bg-white rounded-lg shadow-lg p-8 border border-gray-100 hover:border-blue-500 transition-colors duration-300"
+      >
+        <div
+          class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6"
+        >
+          <svg
+            class="w-8 h-8 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M13 10V3L4 14h7v7l9-11h-7z"
+            />
+          </svg>
+        </div>
+        <h2 class="text-xl font-semibold mb-4 text-center">What's New</h2>
+        <ul class="space-y-3">
+          <li>
+            <a
+              href="#"
+              class="text-gray-600 hover:text-blue-600 block transition-colors duration-300"
+              >Latest features</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="text-gray-600 hover:text-blue-600 block transition-colors duration-300"
+              >Platform updates</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="text-gray-600 hover:text-blue-600 block transition-colors duration-300"
+              >New tools</a
+            >
+          </li>
+          <li>
+            <a
+              href="#"
+              class="text-gray-600 hover:text-blue-600 block transition-colors duration-300"
+              >Upcoming features</a
+            >
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Contact Form -->
+<section class="bg-gray-50 py-16">
+  <div class="container mx-auto px-6">
+    <div class="max-w-2xl mx-auto">
+      <h2 class="text-3xl font-bold text-center mb-8">Still need help?</h2>
+      <form class="space-y-6">
+        <div>
+          <label
+            for="email"
+            class="block text-sm font-medium text-gray-700 mb-2"
+            >Your email address</label
+          >
+          <input
+            type="email"
+            id="email"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+
+        <div>
+          <label
+            for="topic"
+            class="block text-sm font-medium text-gray-700 mb-2"
+            >Topic</label
+          >
+          <select
+            id="topic"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          >
+            <option value="">Select a topic</option>
+            <option value="billing">Billing</option>
+            <option value="technical">Technical Support</option>
+            <option value="feature">Feature Request</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+
+        <div>
+          <label
+            for="subject"
+            class="block text-sm font-medium text-gray-700 mb-2"
+            >Subject</label
+          >
+          <input
+            type="text"
+            id="subject"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+        </div>
+
+        <div>
+          <label
+            for="message"
+            class="block text-sm font-medium text-gray-700 mb-2"
+            >Your message</label
+          >
+          <textarea
+            id="message"
+            rows="6"
+            class="w-full px-4 py-3 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          ></textarea>
+        </div>
+
+        <div class="flex items-start space-x-2">
+          <input type="checkbox" id="terms" class="mt-1" />
+          <label for="terms" class="text-sm text-gray-600">
+            By submitting this form, you confirm that you have read and agree to
+            our
+            <a href="#" class="text-blue-600 hover:text-blue-500 underline"
+              >Terms of Service</a
+            >
+            and
+            <a href="#" class="text-blue-600 hover:text-blue-500 underline"
+              >Privacy Statement</a
+            >.
+          </label>
+        </div>
+
+        <button
+          type="submit"
+          class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-300"
+        >
+          Send message
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

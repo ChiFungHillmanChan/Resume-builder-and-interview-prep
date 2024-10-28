@@ -41,6 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'widget_tweaks',
     'prep_app',
+    'social_django',
+    'codemirror',
 ]
 
 MIDDLEWARE = [
@@ -131,9 +133,14 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 GEMINI_API_KEY = config('GEMINI_API_KEY')
 
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = 'your-google-client-id'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'your-google-client-secret'
+
 LOGIN_URL = 'login/'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = 'home'  
+SOCIAL_AUTH_LOGIN_ERROR_URL = 'register'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'Google'

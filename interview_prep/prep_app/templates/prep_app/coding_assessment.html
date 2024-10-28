@@ -1,0 +1,479 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AceInterview - Professional Interview Preparation</title>
+    <!-- <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet"> -->
+    <link rel="stylesheet" href="/static/css/base.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css" rel="stylesheet">
+    <!-- Add to your head section -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+    <style>
+        /* Custom styles for CodeMirror */
+        .CodeMirror {
+            height: 400px;
+            border-radius: 0.5rem;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        /* Customize the gutters */
+        .CodeMirror-gutters {
+            background-color: #1a1b26;
+            border-right: 1px solid #2d2d2d;
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+        }
+        
+        /* Customize the active line */
+        .CodeMirror-activeline-background {
+            background-color: #2d2d2d;
+        }
+        
+        /* Customize the selection */
+        .CodeMirror-selected {
+            background-color: #364154 !important;
+        }
+        
+        /* Customize the cursor */
+        .CodeMirror-cursor {
+            border-left: 2px solid #ffffff;
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <nav class="bg-gray-800 border-b border-gray-700">
+        <div class="container mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <a href="{% url 'home' %}" class="text-xl font-bold text-white hover:text-gray-300">
+                        AceInterview
+                    </a>
+                </div>
+                <div class="flex items-center">
+                    <a href="{% url 'interview_prep' %}" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
+                        Back to Assessment
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="min-h-screen bg-gray-900 text-gray-100">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 py-6">
+                <!-- Question Description Panel -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <h1 class="text-2xl font-bold mb-4">{{ question.title }}</h1>
+                    <input type="hidden" name="question_id" value="{{ question.id }}">
+                    <div class="mb-4">
+                        <span class="px-2 py-1 rounded-full text-sm font-semibold
+                            {% if question.difficulty == 'easy' %}bg-green-600
+                            {% elif question.difficulty == 'medium' %}bg-yellow-600
+                            {% else %}bg-red-600{% endif %}">
+                            {{ question.difficulty|title }}
+                        </span>
+                    </div>
+                    <div class="prose prose-invert">
+                        {{ question.description|safe }}
+                    </div>
+                </div>
+
+                <!-- Code Editor Panel -->
+                <div class="bg-gray-800 rounded-lg p-6">
+                    <form id="code-form" method="post">
+                        {% csrf_token %}
+                        <div class="mb-4 flex justify-between items-center">
+                            <select id="language-selector" class="bg-gray-700 text-gray-100 rounded px-3 py-2" onchange="changeLanguage(this.value)">
+                                {% for lang, name in question.LANGUAGE_CHOICES %}
+                                    <option value="{{ lang }}">{{ name }}</option>
+                                {% endfor %}
+                            </select>
+                            
+                            <div class="space-x-2">
+                                <button type="button" onclick="runCode()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+                                    Run Code
+                                </button>
+                                <button type="submit" onclick="submitCode()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                                    Submit
+                                </button>
+                            </div>
+                        </div>
+                    
+                        <!-- Hidden textarea for form submission -->
+                        <textarea id="code-hidden" name="code" style="display: none;"></textarea>
+                        
+                        <!-- CodeMirror will be initialized in this div -->
+                        <div id="code-editor" class="border border-gray-700 rounded-lg"></div>
+                    </form>
+                </div>
+
+            <!-- Output Panel -->
+            <div class="bg-gray-800 rounded-lg p-6 mt-4">
+                <h2 class="text-xl font-bold mb-4">Run your code to see the output..</h2>
+                <div id="output" class="font-mono bg-gray-900 p-4 rounded-lg whitespace-pre max-w- overflow-y-auto break-words"></div>
+              </div>
+
+            <!-- Test Cases Section -->
+            <div class="bg-gray-800 rounded-lg p-6 mt-4">
+                <h2 class="text-xl font-bold mb-4">Test Cases</h2>
+                <div class="flex space-x-2 mb-4">
+                {% for test_case in question.test_cases %}
+                    <button class="test-case-btn {% if forloop.first %}bg-blue-600{% else %}bg-gray-700{% endif %} px-4 py-2 rounded-lg"
+                            data-case="{{ forloop.counter0 }}">
+                    Case {{ forloop.counter }}
+                    </button>
+                {% endfor %}
+                </div>
+
+                {% for test_case in question.test_cases %}
+                <div class="test-case-content {% if not forloop.first %}hidden{% endif %}" data-case-index="{{ forloop.counter0 }}">
+                <div class="space-y-4">
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                    <h3 class="text-sm font-semibold text-gray-400 mb-2">Input:</h3>
+                    <ul class="list-none">
+                        {% for key, value in test_case.input.items %}
+                            <li><strong>{{ key }}:</strong> <strong>{{ value|pprint }}</strong></li>
+                        {% endfor %}
+                        </ul>
+                    </div>
+
+                    <div class="bg-gray-900 p-4 rounded-lg">
+                    <h3 class="text-sm font-semibold text-gray-400 mb-2">Expected Output:</h3>
+                    <pre class="text-white">{{ test_case.expected|pprint }}</pre>
+                    </div>
+                </div>
+                </div>
+                {% endfor %}
+            </div>          
+        </div>
+    </div>
+    <script>
+          // Store the initial code templates
+        const initialCode = {{ question.initial_code|safe }};
+        let lastSavedCode = null;
+        let saveTimeout = null;   
+                
+        // Mapping of language choices to CodeMirror modes
+        const modeMap = {
+            'python': 'python',
+            'javascript': 'javascript',
+            'java': 'text/x-java',
+            'cpp': 'text/x-c++src'
+        };
+        
+        // Function to format output similar to expected output
+        function formatOutput(output) {
+            try {
+                if (typeof output === 'string') {
+                    // Try to parse if it's a stringified JSON
+                    try {
+                        const parsed = JSON.parse(output);
+                        return JSON.stringify(parsed, null, 2);
+                    } catch {
+                        return output;
+                    }
+                }
+                // If output is an array or object
+                
+                let formattedOutput = JSON.stringify(output, null, 2);
+                formattedOutput = formattedOutput.replace(/\s+/g, ''); // Remove all whitespace
+                formattedOutput = formattedOutput.replace(/\[/g, '[ ').replace(/\]/g, ' ]').replace(/,/g, ', '); // Add spaces only after commas and around brackets
+
+                return formattedOutput
+            } catch (e) {
+                return output.toString();
+            }
+        }
+        
+        // Initialize CodeMirror
+        let editor;
+        document.addEventListener('DOMContentLoaded', function() {
+            editor = CodeMirror(document.getElementById('code-editor'), {
+                mode: 'python',  // default mode
+                theme: 'dracula',
+                lineNumbers: true,
+                autoCloseBrackets: true,
+                matchBrackets: true,
+                indentUnit: 4,
+                tabSize: 4,
+                indentWithTabs: false,
+                lineWrapping: true,
+                autofocus: true,
+                extraKeys: {"Tab": "indentMore", "Shift-Tab": "indentLess"},
+                styleActiveLine: true,
+                value: initialCode['python'] || '', // Default to Python template
+            });
+
+            loadSavedCode();
+
+            // Add change event listener for auto-save
+            editor.on('change', function() {
+                // Clear the existing timeout
+                if (saveTimeout) {
+                    clearTimeout(saveTimeout);
+                }
+                
+                // Set a new timeout to save after 1 second of no typing
+                saveTimeout = setTimeout(saveCode, 1000);
+            });
+
+            // Update hidden textarea before form submission
+            document.querySelector('form').addEventListener('submit', function() {
+                document.getElementById('code-hidden').value = editor.getValue();
+            });
+        });
+        
+            // Function to load saved code
+            async function loadSavedCode() {
+                try {
+                    const language = document.querySelector('select').value || 'python';
+                    const response = await fetch(`{% url 'get_saved_code' question.id %}?language=${language}`);
+                    const data = await response.json();
+                    
+                    if (data.status === 'success' && data.code) {
+                        editor.setValue(data.code);
+                        lastSavedCode = data.code;
+                        
+                        // Show a small notification
+                        showNotification('Previous code loaded successfully', 'success');
+                    }
+                } catch (error) {
+                    console.error('Error loading saved code:', error);
+                    showNotification('Error loading previous code', 'error');
+                }
+            }
+
+            // Function to save code
+            async function saveCode() {
+                const currentCode = editor.getValue();
+                
+                // Don't save if code hasn't changed
+                if (currentCode === lastSavedCode) {
+                    return;
+                }
+                
+                try {
+                    const language = document.querySelector('select').value || 'python';
+                    const response = await fetch(`{% url 'save_code' question.id %}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                        },
+                        body: JSON.stringify({
+                            code: currentCode,
+                            language: language
+                        })
+                    });
+                    
+                    const data = await response.json();
+                    if (data.status === 'success') {
+                        lastSavedCode = currentCode;
+                        showNotification('Code saved', 'success');
+                    } else {
+                        showNotification('Error saving code', 'error');
+                    }
+                } catch (error) {
+                    console.error('Error saving code:', error);
+                    showNotification('Error saving code', 'error');
+                }
+            }
+
+            // Function to show notification
+            function showNotification(message, type = 'success') {
+                // Create notification element if it doesn't exist
+                let notification = document.getElementById('code-notification');
+                if (!notification) {
+                    notification = document.createElement('div');
+                    notification.id = 'code-notification';
+                    notification.className = 'fixed bottom-4 right-4 px-4 py-2 rounded-lg text-white transform transition-all duration-300 translate-y-full';
+                    document.body.appendChild(notification);
+                }
+                
+                // Set notification style based on type
+                notification.className = `fixed bottom-4 right-4 px-4 py-2 rounded-lg text-white transform transition-all duration-300 ${
+                    type === 'success' ? 'bg-green-500' : 'bg-red-500'
+                }`;
+                
+                notification.textContent = message;
+                
+                // Show notification
+                setTimeout(() => {
+                    notification.style.transform = 'translateY(0)';
+                }, 100);
+                
+                // Hide notification after 3 seconds
+                setTimeout(() => {
+                    notification.style.transform = 'translateY(150%)'; // Hides the notification
+                }, 3100); // 3100 ms to account for the transition effect
+            }
+        // Update the changeLanguage function to load saved code for the selected language
+            async function changeLanguage(language) {
+                editor.setOption('mode', modeMap[language]);
+                
+                try {
+                    // Try to load saved code for this language
+                    const response = await fetch(`{% url 'get_saved_code' question.id %}?language=${language}`);
+                    const data = await response.json();
+                    
+                    if (data.status === 'success' && data.code) {
+                        editor.setValue(data.code);
+                        lastSavedCode = data.code;
+                    } else {
+                        // If no saved code, load template
+                        const codeTemplate = initialCode[language] || '';
+                        editor.setValue(codeTemplate);
+                    }
+                } catch (error) {
+                    console.error('Error loading saved code:', error);
+                    // Fall back to template on error
+                    const codeTemplate = initialCode[language] || '';
+                    editor.setValue(codeTemplate);
+                }
+            }
+
+        
+        // Function to switch between test cases
+        function switchTestCase(index) {
+            // Hide all test case contents
+            document.querySelectorAll('.test-case-content').forEach(el => el.classList.add('hidden'));
+            // Show selected test case content
+            document.querySelector(`.test-case-content[data-case-index="${index}"]`).classList.remove('hidden');
+            
+            // Update button styles
+            document.querySelectorAll('.test-case-btn').forEach(btn => {
+                btn.classList.remove('bg-blue-600');
+                btn.classList.add('bg-gray-700');
+            });
+            // Update selected button style
+            document.querySelector(`.test-case-btn[data-case="${index}"]`).classList.remove('bg-gray-700');
+            document.querySelector(`.test-case-btn[data-case="${index}"]`).classList.add('bg-blue-600');
+
+            // If there are test results, update the main output to show current test case result
+            const outputElement = document.getElementById('output');
+            if (outputElement && window.lastTestResults && window.lastTestResults.test_results) {
+                const testResult = window.lastTestResults.test_results[index];
+                if (testResult) {
+                    const formattedOutput = formatOutput(testResult.actual_output);
+                    const statusHtml = testResult.passed
+                        ? '<div class="mt-2 text-green-500 flex items-center"><svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Accepted</div>'
+                        : '<div class="mt-2 text-red-500 flex items-center"><svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>Wrong Answer</div>';
+                    
+                    outputElement.innerHTML = `<pre class="font-mono">${formattedOutput}</pre>${statusHtml}`;
+                }
+            }
+        }
+
+        // Add click event listeners to test case buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click handlers for test case buttons
+            document.querySelectorAll('.test-case-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const caseIndex = this.getAttribute('data-case');
+                    switchTestCase(caseIndex);
+                });
+            });
+        });
+
+        // Update the runCode function to store the test results
+        async function runCode() {
+            try {
+                // Show loading state
+                const runButton = document.querySelector('button[onclick="runCode()"]');
+                const originalText = runButton.innerHTML;
+                runButton.innerHTML = 'Running...';
+                runButton.disabled = true;
+
+                // Get the code from editor
+                const code = editor.getValue();
+                
+                // Get the main output element
+                const mainOutput = document.getElementById('output');
+                mainOutput.textContent = 'Running...';
+                
+                // Send the request
+                const response = await fetch('{% url "run_code" question.id %}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+                    },
+                    body: JSON.stringify({
+                        code: code,
+                        language: document.querySelector('select').value
+                    })
+                });
+
+                const result = await response.json();
+                
+                // Store the test results globally
+                window.lastTestResults = result;
+                
+                if (result.status === 'error') {
+                    // Show error in main output
+                    mainOutput.innerHTML = `<span class="text-red-500">${result.message}</span>`;
+                    return;
+                }
+
+                // Find current active test case
+                const activeTestCase = document.querySelector('.test-case-btn.bg-blue-600');
+                const currentIndex = activeTestCase ? activeTestCase.getAttribute('data-case') : '0';
+
+                // Update main output with current test case result
+                if (result.test_results && result.test_results[currentIndex]) {
+                    const testResult = result.test_results[currentIndex];
+                    const formattedOutput = formatOutput(testResult.actual_output);
+                    const statusHtml = testResult.passed
+                        ? '<div class="mt-2 text-green-500 flex items-center"><svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>Accepted</div>'
+                        : '<div class="mt-2 text-red-500 flex items-center"><svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>Wrong Answer</div>';
+                    
+                    mainOutput.innerHTML = `<pre class="font-mono">${formattedOutput}</pre>${statusHtml}`;
+                }
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('output').innerHTML = '<span class="text-red-500">An error occurred while running the code</span>';
+            } finally {
+                // Reset button state
+                const runButton = document.querySelector('button[onclick="runCode()"]');
+                runButton.innerHTML = 'Run Code';
+                runButton.disabled = false;
+            }
+        }
+        
+        // Helper function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+        
+        // Optional: Add auto-resize functionality
+        window.addEventListener('resize', function() {
+            editor.refresh();
+        });
+
+    </script>
+</body>
+</html> 
