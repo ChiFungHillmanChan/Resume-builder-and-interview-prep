@@ -20,7 +20,7 @@ AceInterviews is a comprehensive web application designed to assist job seekers 
    - Analyze job requirements by uploading a job description.
    - Get insights into job expectations, required skills, and key qualifications, helping you understand what employers are looking for.
 
-### 5. **INTERVIEW PREPARATION (Coding interview as arrived) **
+### 5. **INTERVIEW PREPARATION (Coding interview has arrived)**
    - Prepare for interviews by practicing with simulations.
    - Boost your confidence and sharpen your skills through mock interviews designed to mimic real-world job interviews.
 
